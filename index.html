@@ -305,8 +305,6 @@
 
   <body>
     <div class="container">
-      <!-- <h1>🏸 Badminton Host</h1> -->
-
       <div class="toolbar">
         <button id="sortName">Tên</button>
         <button id="sortMatches">Trận</button>
@@ -371,6 +369,17 @@
           .replaceAll("'", "&#039;");
       }
 
+      function normalizeSearchText(value) {
+        return String(value || "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/đ/g, "d")
+          .replace(/Đ/g, "D")
+          .replace(/[^a-zA-Z0-9\s]/g, "")
+          .toLowerCase()
+          .trim();
+      }
+
       function sortMembers() {
         if (sortMode === "name") {
           members.sort((a, b) =>
@@ -388,10 +397,10 @@
       }
 
       function getVisibleMembers() {
+        const normalizedSearchText = normalizeSearchText(searchText);
+
         return members.filter((member) =>
-          String(member.name || "")
-            .toLowerCase()
-            .includes(searchText.toLowerCase()),
+          normalizeSearchText(member.name).includes(normalizedSearchText),
         );
       }
 
@@ -515,7 +524,7 @@
       });
 
       document.getElementById("search").addEventListener("input", (event) => {
-        searchText = event.target.value;
+        searchText = normalizeSearchText(event.target.value);
         render();
       });
 
