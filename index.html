@@ -1,1261 +1,558 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+  <title>Badminton Host</title>
 
-    <!-- Mobile / iPhone -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+    }
 
-    <title>Badminton Host</title>
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
-    <style>
-      * {
-        box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
-      }
+    h1 {
+      margin: 0 0 16px;
+      font-size: 25px;
+    }
 
+    /* Thanh công cụ */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .toolbar button {
+      height: 42px;
+      padding: 0 15px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      background: #fff;
+      color: #222;
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .toolbar button:active {
+      background: #eee;
+    }
+
+    #search {
+      flex: 1;
+      min-width: 120px;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      background: #fff;
+      font-size: 15px;
+      outline: none;
+    }
+
+    #search:focus {
+      border-color: #888;
+    }
+
+    #addMember {
+      width: 44px;
+      min-width: 44px;
+      padding: 0;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 400;
+    }
+
+    /* Bảng */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #e5e5e5;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #fafafa;
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Độ rộng các cột */
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 34%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 23%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 18%;
+      text-align: center;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 25%;
+    }
+
+    .name-input,
+    .note-input {
+      width: 100%;
+      height: 38px;
+      padding: 6px 8px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      background: transparent;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .name-input:hover,
+    .name-input:focus,
+    .note-input:hover,
+    .note-input:focus {
+      border-color: #ccc;
+      background: #fff;
+    }
+
+    /* Số trận */
+    .matches {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .match-btn {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .match-btn:active {
+      background: #eee;
+    }
+
+    .match-count {
+      min-width: 28px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    /* Thanh toán */
+    .paid-checkbox {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      cursor: pointer;
+      vertical-align: middle;
+      accent-color: #222;
+    }
+
+    .empty {
+      padding: 25px;
+      text-align: center;
+      color: #888;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
       body {
-        margin: 0;
-        background: #f3f5f8;
-        color: #172033;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
-          sans-serif;
+        padding: 12px;
       }
 
-      button,
-      input,
-      select {
-        font: inherit;
-      }
-
-      button {
-        cursor: pointer;
-      }
-
-      .app {
-        width: 100%;
-        max-width: 900px;
-        margin: auto;
-        padding: calc(14px + env(safe-area-inset-top)) 14px
-          calc(25px + env(safe-area-inset-bottom));
-      }
-
-      /* =========================
-           HEADER
-        ========================= */
-
-      .header {
-        margin-bottom: 15px;
-      }
-
-      .header h1 {
-        margin: 0;
-        font-size: 26px;
-      }
-
-      .header p {
-        margin: 5px 0 0;
-        color: #687386;
-        font-size: 14px;
-      }
-
-      /* =========================
-           TOP BAR
-        ========================= */
-
-      .top-bar {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
+      h1 {
+        font-size: 21px;
         margin-bottom: 12px;
       }
 
-      .date-box {
-        flex: 1;
-        min-width: 180px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        background: white;
-        border: 1px solid #e2e6ed;
-        border-radius: 12px;
-        padding: 9px 11px;
-      }
-
-      .date-box input {
-        border: none;
-        outline: none;
-        width: 100%;
-        font-weight: 700;
-        background: transparent;
-      }
-
-      .btn {
-        border: none;
-        border-radius: 11px;
-        padding: 10px 14px;
-        font-weight: 700;
-        background: #e8edf5;
-        color: #172033;
-      }
-
-      .btn.primary {
-        background: #1769e0;
-        color: white;
-      }
-
-      .btn.danger {
-        background: #fff0f1;
-        color: #d63343;
-      }
-
-      .btn:active {
-        transform: scale(0.97);
-      }
-
-      /* =========================
-           STATISTICS
-        ========================= */
-
-      .stats {
+      .toolbar {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 9px;
-        margin-bottom: 14px;
+        grid-template-columns: auto auto 1fr auto;
+        gap: 6px;
+        margin-bottom: 10px;
       }
 
-      .stat {
-        background: white;
-        border: 1px solid #e2e6ed;
-        border-radius: 14px;
-        padding: 12px;
+      .toolbar button {
+        height: 42px;
+        padding: 0 11px;
+        font-size: 14px;
       }
 
-      .stat-number {
-        font-size: 23px;
-        font-weight: 800;
-      }
-
-      .stat-label {
-        margin-top: 3px;
-        font-size: 12px;
-        color: #687386;
-      }
-
-      /* =========================
-           CONTROL PANEL
-        ========================= */
-
-      .panel {
-        background: white;
-        border: 1px solid #e2e6ed;
-        border-radius: 16px;
-        overflow: hidden;
-      }
-
-      .panel-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-
-        padding: 12px;
-        border-bottom: 1px solid #e5e8ee;
-      }
-
-      .controls {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      select,
-      .search {
-        border: 1px solid #dfe4eb;
-        border-radius: 10px;
-        padding: 9px 10px;
-        background: white;
-        outline: none;
-      }
-
-      .search {
-        width: 180px;
-      }
-
-      /* =========================
-           PLAYER
-        ========================= */
-
-      .player-list {
+      #search {
         width: 100%;
+        min-width: 0;
+        height: 42px;
       }
 
-      .player {
-        display: grid;
-
-        grid-template-columns:
-          35px
-          minmax(140px, 1fr)
-          125px
-          105px
-          minmax(130px, 1fr)
-          30px;
-
-        gap: 10px;
-
-        align-items: center;
-
-        padding: 12px;
-
-        border-bottom: 1px solid #e8ebf0;
+      #addMember {
+        width: 42px;
+        min-width: 42px;
       }
 
-      .player:last-child {
-        border-bottom: none;
-      }
-
-      .rank {
-        text-align: center;
-        color: #7a8494;
-        font-weight: 700;
-      }
-
-      .player-name {
-        font-weight: 750;
-      }
-
-      .guest {
-        display: inline-block;
-        margin-left: 5px;
-
-        padding: 2px 6px;
-
+      .table-container {
         border-radius: 7px;
-
-        background: #fff3cd;
-        color: #806000;
-
-        font-size: 10px;
-        font-weight: 700;
       }
 
-      /* =========================
-           MATCH COUNTER
-        ========================= */
-
-      .match-counter {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
+      /*
+        Giữ nguyên dạng bảng.
+        Khi màn hình nhỏ, bảng có thể vuốt ngang.
+      */
+      table {
+        min-width: 650px;
       }
 
-      .counter-btn {
-        width: 36px;
-        height: 36px;
+      th,
+      td {
+        padding: 8px;
+      }
 
-        border: none;
-        border-radius: 10px;
+      .name-input,
+      .note-input {
+        height: 40px;
+        font-size: 16px;
+      }
 
-        background: #edf1f6;
-
+      .match-btn {
+        width: 40px;
+        height: 40px;
         font-size: 22px;
-        font-weight: 800;
-      }
-
-      .counter-btn.plus {
-        background: #dcecff;
-        color: #1769e0;
-      }
-
-      .counter-btn:active {
-        transform: scale(0.9);
       }
 
       .match-count {
-        min-width: 28px;
-        text-align: center;
+        min-width: 30px;
+        font-size: 16px;
+      }
+    }
 
-        font-size: 20px;
-        font-weight: 800;
+    /* Điện thoại rất nhỏ */
+    @media (max-width: 380px) {
+      body {
+        padding: 8px;
       }
 
-      /* =========================
-           PAYMENT
-        ========================= */
+      .toolbar {
+        grid-template-columns: auto auto 1fr auto;
+      }
 
-      .payment {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-
-        white-space: nowrap;
-
+      .toolbar button {
+        padding: 0 9px;
         font-size: 13px;
-        cursor: pointer;
       }
 
-      .payment input {
-        width: 20px;
-        height: 20px;
-
-        accent-color: #198754;
-        -webkit-appearance: checkbox;
-        appearance: auto;
-        cursor: pointer;
+      #addMember {
+        width: 40px;
+        min-width: 40px;
       }
-
-      /* =========================
-           NOTE
-        ========================= */
-
-      .note input {
-        width: 100%;
-
-        padding: 7px 8px;
-
-        border: 1px solid transparent;
-        border-radius: 8px;
-
-        background: #f7f8fa;
-
-        outline: none;
-      }
-
-      .note input:focus {
-        background: white;
-        border-color: #b8cef0;
-      }
-
-      /* =========================
-           DELETE
-        ========================= */
-
-      .delete-btn {
-        border: none;
-        background: transparent;
-
-        color: #9ba4b2;
-
-        font-size: 20px;
-      }
-
-      .delete-btn:active {
-        color: #dc3545;
-      }
-
-      /* =========================
-           EMPTY
-        ========================= */
-
-      .empty {
-        text-align: center;
-        padding: 40px 15px;
-
-        color: #737e8e;
-      }
-
-      /* =========================
-           MODAL
-        ========================= */
-
-      .modal-background {
-        position: fixed;
-        inset: 0;
-
-        display: none;
-
-        align-items: flex-end;
-        justify-content: center;
-
-        background: rgba(0, 0, 0, 0.45);
-
-        z-index: 100;
-      }
-
-      .modal-background.show {
-        display: flex;
-      }
-
-      .modal {
-        width: 100%;
-        max-width: 550px;
-
-        background: white;
-
-        border-radius: 20px 20px 0 0;
-
-        padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
-      }
-
-      .modal h2 {
-        margin: 0 0 15px;
-      }
-
-      .modal input {
-        width: 100%;
-
-        padding: 12px;
-
-        border: 1px solid #dfe4eb;
-        border-radius: 11px;
-
-        outline: none;
-      }
-
-      .modal-actions {
-        display: flex;
-        gap: 8px;
-
-        margin-top: 15px;
-      }
-
-      .modal-actions button {
-        flex: 1;
-      }
-
-      /* =========================
-           TOAST
-        ========================= */
-
-      .toast {
-        position: fixed;
-
-        left: 50%;
-        bottom: 25px;
-
-        transform: translateX(-50%) translateY(20px);
-
-        background: #172033;
-        color: white;
-
-        padding: 10px 15px;
-
-        border-radius: 10px;
-
-        font-size: 13px;
-
-        opacity: 0;
-
-        pointer-events: none;
-
-        transition: 0.2s;
-
-        z-index: 200;
-      }
-
-      .toast.show {
-        opacity: 1;
-
-        transform: translateX(-50%) translateY(0);
-      }
-
-      /* =========================
-           MOBILE
-        ========================= */
-
-      @media (max-width: 700px) {
-        .stats {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .player {
-          grid-template-columns:
-            25px
-            minmax(100px, 1fr)
-            112px
-            30px;
-
-          gap: 7px;
-
-          padding: 11px 9px;
-        }
-
-        .payment {
-          grid-column: 2 / 3;
-        }
-
-        .note {
-          grid-column: 3 / 5;
-        }
-
-        .delete-btn {
-          grid-column: 4;
-          grid-row: 1;
-        }
-
-        .search {
-          width: 140px;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="app">
-      <!-- HEADER -->
-
-      <div class="header">
-        <h1>🏸 Badminton Host</h1>
-
-        <p>Quản lý số trận cầu lông theo từng ngày</p>
-      </div>
-      <!-- DATE + BUTTONS -->
-      <div class="top-bar">
-        <div class="date-box">
-          📅
-          <input aria-label="nhập ngày" type="date" id="dateInput" />
-        </div>
-        <button class="btn" id="todayButton">Hôm nay</button>
-
-        <button class="btn primary" id="addMemberButton">＋ Thành viên</button>
-
-        <button class="btn" id="addGuestButton">＋ Khách</button>
-      </div>
-
-      <!-- STATISTICS -->
-
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-number" id="totalPeople">0</div>
-
-          <div class="stat-label">Người chơi</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-number" id="totalMatches">0</div>
-
-          <div class="stat-label">Tổng trận</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-number" id="totalPaid">0</div>
-
-          <div class="stat-label">Đã thanh toán</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-number" id="totalUnpaid">0</div>
-
-          <div class="stat-label">Chưa thanh toán</div>
-        </div>
-      </div>
-
-      <!-- MAIN PANEL -->
-
-      <div class="panel">
-        <div class="panel-header">
-          <div class="controls">
-            <select id="sortSelect" aria-label="Sắp xếp danh sách thành viên">
-              <option value="matchesDesc">Số trận: nhiều → ít</option>
-
-              <option value="matchesAsc">Số trận: ít → nhiều</option>
-
-              <option value="nameAsc">Tên: A → Z</option>
-
-              <option value="nameDesc">Tên: Z → A</option>
-
-              <option value="paidFirst">Đã thanh toán trước</option>
-            </select>
-
-            <input
-              class="search"
-              id="searchInput"
-              type="search"
-              placeholder="Tìm thành viên..."
-              aria-label="Tìm thành viên"
-            />
-          </div>
-
-          <div class="controls">
-            <button class="btn" id="backupButton">💾 Backup</button>
-            <button class="btn danger" id="resetButton">Reset ngày</button>
-          </div>
-        </div>
-
-        <div class="player-list" id="playerList"></div>
-      </div>
-    </div>
-
-    <!-- ADD PLAYER MODAL -->
-
-    <div class="modal-background" id="modal">
-      <div class="modal">
-        <h2 id="modalTitle">Thêm thành viên</h2>
-
-        <input
-          id="nameInput"
-          type="text"
-          placeholder="Nhập tên..."
-          autocomplete="off"
-        />
-
-        <div class="modal-actions">
-          <button class="btn" id="cancelButton">Hủy</button>
-
-          <button class="btn primary" id="saveButton">Thêm</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TOAST -->
-
-    <div class="toast" id="toast"></div>
-
-    <script>
-      /* =====================================================
-   STORAGE
-===================================================== */
-
-      const STORAGE_KEY = "BADMINTON_HOST_DATA";
-
-      /* =====================================================
-   STATE
-===================================================== */
-
-      let appData = loadData();
-
-      let currentDate = getToday();
-
-      let addingGuest = false;
-
-      /* =====================================================
-   DOM
-===================================================== */
-
-      const dateInput = document.getElementById("dateInput");
-
-      const playerList = document.getElementById("playerList");
-
-      const searchInput = document.getElementById("searchInput");
-
-      const sortSelect = document.getElementById("sortSelect");
-
-      const modal = document.getElementById("modal");
-
-      const modalTitle = document.getElementById("modalTitle");
-
-      const nameInput = document.getElementById("nameInput");
-
-      /* =====================================================
-   DATE
-===================================================== */
-
-      function getToday() {
-        const date = new Date();
-
-        const year = date.getFullYear();
-
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-
-        const day = String(date.getDate()).padStart(2, "0");
-
-        return `${year}-${month}-${day}`;
-      }
-
-      /* =====================================================
-   LOAD / SAVE
-===================================================== */
-
-      function loadData() {
-        try {
-          const data = localStorage.getItem(STORAGE_KEY);
-
-          if (!data) {
-            return {
-              days: {},
-            };
-          }
-
-          return JSON.parse(data);
-        } catch (error) {
-          console.error(error);
-
-          return {
-            days: {},
-          };
-        }
-      }
-
-      function saveData() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-      }
-
-      /* =====================================================
-   CURRENT DAY
-===================================================== */
-
-      function getCurrentDay() {
-        if (!appData.days[currentDate]) {
-          appData.days[currentDate] = {
-            players: [],
-          };
-        }
-
-        return appData.days[currentDate];
-      }
-
-      /* =====================================================
-   ID
-===================================================== */
-
-      function createId() {
-        return (
-          Date.now().toString(36) + Math.random().toString(36).substring(2)
-        );
-      }
-
-      /* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-      function escapeHTML(value) {
-        return String(value)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
-      }
-
-      /* =====================================================
-   RENDER
-===================================================== */
-
-      function updateStatistics() {
-        const day = getCurrentDay();
-
-        const totalMatches = day.players.reduce(
-          (sum, player) => sum + player.matches,
-          0,
-        );
-
-        const totalPaid = day.players.filter((player) => player.paid).length;
-
-        document.getElementById("totalPeople").textContent = day.players.length;
-        document.getElementById("totalMatches").textContent = totalMatches;
-        document.getElementById("totalPaid").textContent = totalPaid;
-        document.getElementById("totalUnpaid").textContent =
-          day.players.length - totalPaid;
-      }
-
-      function render() {
-        dateInput.value = currentDate;
-
-        const day = getCurrentDay();
-
-        let players = [...day.players];
-
-        /* SEARCH */
-
-        const keyword = searchInput.value.trim().toLowerCase();
-
-        if (keyword) {
-          players = players.filter((player) =>
-            player.name.toLowerCase().includes(keyword),
-          );
-        }
-
-        /* SORT */
-
-        const sort = sortSelect.value;
-
-        if (sort === "matchesDesc") {
-          players.sort((a, b) => b.matches - a.matches);
-        }
-
-        if (sort === "matchesAsc") {
-          players.sort((a, b) => a.matches - b.matches);
-        }
-
-        if (sort === "nameAsc") {
-          players.sort((a, b) => a.name.localeCompare(b.name, "vi"));
-        }
-
-        if (sort === "nameDesc") {
-          players.sort((a, b) => b.name.localeCompare(a.name, "vi"));
-        }
-
-        if (sort === "paidFirst") {
-          players.sort((a, b) => Number(b.paid) - Number(a.paid));
-        }
-
-        /* STATISTICS */
-
-        updateStatistics();
-
-        /* EMPTY */
-
-        if (players.length === 0) {
-          playerList.innerHTML = `
-
-            <div class="empty">
-
-                ${
-                  day.players.length
-                    ? "Không tìm thấy thành viên."
-                    : "Chưa có người chơi."
-                }
-
-                <br>
-
-                Thêm thành viên hoặc khách để bắt đầu.
-
-            </div>
-
-        `;
-
-          return;
-        }
-
-        /* PLAYER LIST */
-
-        playerList.innerHTML = players
-          .map(
-            (player, index) => `
-
-        <div
-            class="player"
-            data-id="${player.id}"
-        >
-
-            <div class="rank">
-                ${index + 1}
-            </div>
-
-
-            <div class="player-name">
-
-                ${escapeHTML(player.name)}
-
-                ${
-                  player.guest
-                    ? `<span class="guest">
-                        KHÁCH
-                       </span>`
-                    : ""
-                }
-
-            </div>
-
-
-            <div class="match-counter">
-
-                <button
-                    class="counter-btn"
-                    data-action="minus"
-                >
-                    −
-                </button>
-
-
-                <span class="match-count">
-
-                    ${player.matches}
-
-                </span>
-
-
-                <button
-                    class="counter-btn plus"
-                    data-action="plus"
-                >
-                    ＋
-                </button>
-
-            </div>
-
-            <label class="payment">
-                <input
-                    type="checkbox"
-                    data-action="paid"
-                    ${player.paid ? "checked" : ""}
-                >
-                Đã TT
-            </label>
-
-            <div class="note">
-                <input
-                    type="text"
-                    data-action="note"
-                    value="${escapeHTML(player.note)}"
-                    placeholder="Ghi chú..."
-                >
-
-            </div>
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🏸 Badminton Host</h1>
+
+  <div class="toolbar">
+    <button id="sortName">Tên</button>
+    <button id="sortMatches">Trận</button>
+    <input
+      id="search"
+      type="search"
+      placeholder="Tìm tên..."
+      autocomplete="off"
+    >
+    <button id="addMember" title="Thêm thành viên">+</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Tên thành viên</th>
+          <th>Số trận</th>
+          <th>Đã thanh toán</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody id="memberTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = "badminton-host-members";
+
+  let members = [];
+
+  try {
+    members = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  } catch (error) {
+    members = [];
+  }
+
+  let searchText = "";
+  let sortMode = null;
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+  }
+
+  function createMember() {
+    return {
+      id: Date.now().toString() + Math.random().toString(16).slice(2),
+      name: "",
+      matches: 0,
+      paid: false,
+      note: ""
+    };
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function getVisibleMembers() {
+    let result = members.filter(member =>
+      String(member.name || "")
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
+
+    if (sortMode === "name") {
+      result.sort((a, b) =>
+        String(a.name || "").localeCompare(
+          String(b.name || ""),
+          "vi",
+          { sensitivity: "base" }
+        )
+      );
+    }
+
+    if (sortMode === "matches") {
+      result.sort((a, b) =>
+        Number(b.matches || 0) - Number(a.matches || 0)
+      );
+    }
+
+    return result;
+  }
+
+  function render() {
+    const table = document.getElementById("memberTable");
+    const visible = getVisibleMembers();
+
+    table.innerHTML = "";
+
+    if (visible.length === 0) {
+      table.innerHTML = `
+        <tr>
+          <td colspan="4" class="empty">
+            Chưa có thành viên
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    visible.forEach(member => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>
+          <input
+            class="name-input"
+            type="text"
+            value="${escapeHtml(member.name)}"
+            placeholder="Tên..."
+            autocomplete="off"
+          >
+        </td>
+
+        <td>
+          <div class="matches">
             <button
-                class="delete-btn"
-                data-action="delete"
-            >
-                ×
-            </button>
+              class="match-btn decrease"
+              type="button"
+              aria-label="Giảm số trận"
+            >−</button>
 
-        </div>
+            <span class="match-count">${Number(member.matches || 0)}</span>
 
-    `,
-          )
-          .join("");
-      }
+            <button
+              class="match-btn increase"
+              type="button"
+              aria-label="Tăng số trận"
+            >+</button>
+          </div>
+        </td>
 
-      /* =====================================================
-   ADD PLAYER
-===================================================== */
+        <td>
+          <input
+            class="paid-checkbox"
+            type="checkbox"
+            ${member.paid ? "checked" : ""}
+            aria-label="Đã thanh toán"
+          >
+        </td>
 
-      function addPlayer(name, guest) {
-        name = name.trim();
+        <td>
+          <input
+            class="note-input"
+            type="text"
+            value="${escapeHtml(member.note)}"
+            placeholder="Ghi chú..."
+          >
+        </td>
+      `;
 
-        if (!name) {
-          return;
-        }
+      const nameInput = row.querySelector(".name-input");
+      const noteInput = row.querySelector(".note-input");
+      const paidCheckbox = row.querySelector(".paid-checkbox");
+      const decreaseButton = row.querySelector(".decrease");
+      const increaseButton = row.querySelector(".increase");
 
-        const day = getCurrentDay();
+      nameInput.addEventListener("input", event => {
+        member.name = event.target.value;
+        save();
+      });
 
-        const exists = day.players.some(
-          (player) => player.name.toLowerCase() === name.toLowerCase(),
+      noteInput.addEventListener("input", event => {
+        member.note = event.target.value;
+        save();
+      });
+
+      paidCheckbox.addEventListener("change", event => {
+        member.paid = event.target.checked;
+        save();
+      });
+
+      decreaseButton.addEventListener("click", () => {
+        member.matches = Math.max(
+          0,
+          Number(member.matches || 0) - 1
         );
 
-        if (exists) {
-          showToast("Tên này đã tồn tại.");
-
-          return;
-        }
-
-        day.players.push({
-          id: createId(),
-
-          name: name,
-
-          guest: guest,
-
-          matches: 0,
-
-          paid: false,
-
-          note: "",
-        });
-
-        saveData();
-
-        render();
-
-        showToast("Đã thêm " + name);
-      }
-
-      /* =====================================================
-   MODAL
-===================================================== */
-
-      function openModal(guest) {
-        addingGuest = guest;
-
-        modalTitle.textContent = guest ? "Thêm khách" : "Thêm thành viên";
-
-        nameInput.value = "";
-
-        modal.classList.add("show");
-
-        setTimeout(() => nameInput.focus(), 100);
-      }
-
-      function closeModal() {
-        modal.classList.remove("show");
-      }
-
-      /* =====================================================
-   EVENTS
-===================================================== */
-
-      /* DATE */
-
-      dateInput.addEventListener("change", (event) => {
-        currentDate = event.target.value;
-
+        save();
         render();
       });
 
-      /* TODAY */
+      increaseButton.addEventListener("click", () => {
+        member.matches =
+          Number(member.matches || 0) + 1;
 
-      document.getElementById("todayButton").addEventListener("click", () => {
-        currentDate = getToday();
-
+        save();
         render();
       });
 
-      /* ADD MEMBER */
-
-      document
-        .getElementById("addMemberButton")
-        .addEventListener("click", () => openModal(false));
-
-      /* ADD GUEST */
-
-      document
-        .getElementById("addGuestButton")
-        .addEventListener("click", () => openModal(true));
-
-      /* CANCEL */
-
-      document
-        .getElementById("cancelButton")
-        .addEventListener("click", closeModal);
-
-      /* SAVE */
-
-      document.getElementById("saveButton").addEventListener("click", () => {
-        if (nameInput.value.trim()) {
-          addPlayer(nameInput.value, addingGuest);
-
-          closeModal();
-        }
-      });
-
-      /* ENTER */
-
-      nameInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          document.getElementById("saveButton").click();
-        }
-      });
-
-      /* SEARCH */
-
-      searchInput.addEventListener("input", render);
-
-      /* SORT */
-
-      sortSelect.addEventListener("change", render);
-
-      /* =====================================================
-   PLAYER CLICK
-===================================================== */
-
-      playerList.addEventListener("click", (event) => {
-        const target = event.target;
-
-        if (!(target instanceof Element)) {
-          return;
-        }
-
-        const actionTarget = target.closest("[data-action]");
-
-        if (!actionTarget) {
-          return;
-        }
-
-        const row = actionTarget.closest(".player");
-
-        if (!row) return;
-
-        const id = row.dataset.id;
-
-        const day = getCurrentDay();
-
-        const player = day.players.find((p) => p.id === id);
-
-        if (!player) return;
-
-        const action = actionTarget.dataset.action;
-
-        if (action === "paid" || action === "note") {
-          return;
-        }
-
-        /* PLUS */
-
-        if (action === "plus") {
-          player.matches++;
-        }
-
-        /* MINUS */
-
-        if (action === "minus") {
-          player.matches = Math.max(0, player.matches - 1);
-        }
-
-        /* DELETE */
-
-        if (action === "delete") {
-          const confirmed = confirm(`Xóa "${player.name}"?`);
-
-          if (!confirmed) {
-            return;
-          }
-
-          day.players = day.players.filter((p) => p.id !== id);
-        }
-
-        saveData();
-
-        // + / - chỉ cập nhật đúng dòng hiện tại.
-        // Không render lại toàn bộ danh sách để Note không mất focus.
-        if (action === "plus" || action === "minus") {
-          const countElement = row.querySelector(".match-count");
-          if (countElement) {
-            countElement.textContent = player.matches;
-          }
-          updateStatistics();
-          return;
-        }
-
-        // Chỉ render lại khi xóa thành viên.
-        render();
-      });
-
-      /* =====================================================
-   CHECKBOX
-===================================================== */
-
-      playerList.addEventListener("change", (event) => {
-        const target = event.target;
-
-        if (!(target instanceof HTMLInputElement)) {
-          return;
-        }
-
-        if (target.dataset.action !== "paid") {
-          return;
-        }
-
-        const row = target.closest(".player");
-
-        if (!row) return;
-
-        const id = row.dataset.id;
-
-        const day = getCurrentDay();
-
-        const player = day.players.find((p) => p.id === id);
-
-        if (!player) return;
-
-        player.paid = target.checked;
-
-        saveData();
-
-        // Không render lại danh sách, tránh làm mất focus/input.
-        updateStatistics();
-      });
-
-      /* =====================================================
-   NOTE
-===================================================== */
-
-      playerList.addEventListener("input", (event) => {
-        const target = event.target;
-
-        if (!(target instanceof HTMLInputElement)) {
-          return;
-        }
-
-        if (target.dataset.action !== "note") {
-          return;
-        }
-
-        const row = target.closest(".player");
-
-        if (!row) return;
-
-        const id = row.dataset.id;
-
-        const day = getCurrentDay();
-
-        const player = day.players.find((p) => p.id === id);
-
-        if (!player) return;
-
-        player.note = event.target.value;
-
-        saveData();
-      });
-
-      /* =====================================================
-   RESET
-===================================================== */
-
-      document.getElementById("resetButton").addEventListener("click", () => {
-        const day = getCurrentDay();
-
-        if (day.players.length === 0) {
-          showToast("Ngày này chưa có dữ liệu.");
-
-          return;
-        }
-
-        const confirmed = confirm(`Xóa toàn bộ dữ liệu ngày ${currentDate}?`);
-
-        if (!confirmed) return;
-
-        appData.days[currentDate] = {
-          players: [],
-        };
-
-        saveData();
-
-        render();
-
-        showToast("Đã reset ngày.");
-      });
-
-      /* =====================================================
-   BACKUP
-===================================================== */
-
-      document.getElementById("backupButton").addEventListener("click", () => {
-        const json = JSON.stringify(appData, null, 2);
-
-        const blob = new Blob([json], {
-          type: "application/json",
-        });
-
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-
-        link.href = url;
-
-        link.download = "badminton-host-backup.json";
-
-        link.click();
-
-        URL.revokeObjectURL(url);
-
-        showToast("Đã tạo file backup.");
-      });
-
-      /* =====================================================
-   TOAST
-===================================================== */
-
-      let toastTimer;
-
-      function showToast(message) {
-        const toast = document.getElementById("toast");
-
-        toast.textContent = message;
-
-        toast.classList.add("show");
-
-        clearTimeout(toastTimer);
-
-        toastTimer = setTimeout(() => {
-          toast.classList.remove("show");
-        }, 1600);
-      }
-
-      /* =====================================================
-   START
-===================================================== */
-
-      render();
-    </script>
-  </body>
+      table.appendChild(row);
+    });
+  }
+
+  /*
+    Mỗi lần bấm "Tên":
+    luôn sắp xếp A → Z.
+  */
+  document.getElementById("sortName").addEventListener("click", () => {
+    sortMode = "name";
+    render();
+  });
+
+  /*
+    Mỗi lần bấm "Trận":
+    luôn sắp xếp nhiều trận → ít trận.
+  */
+  document.getElementById("sortMatches").addEventListener("click", () => {
+    sortMode = "matches";
+    render();
+  });
+
+  document.getElementById("search").addEventListener("input", event => {
+    searchText = event.target.value;
+    render();
+  });
+
+  document.getElementById("addMember").addEventListener("click", () => {
+    const newMember = createMember();
+
+    members.push(newMember);
+
+    searchText = "";
+    sortMode = null;
+
+    document.getElementById("search").value = "";
+
+    save();
+    render();
+
+    // Focus ngay vào tên thành viên vừa thêm.
+    const inputs = document.querySelectorAll(".name-input");
+
+    if (inputs.length > 0) {
+      inputs[inputs.length - 1].focus();
+    }
+  });
+
+  render();
+</script>
+
+</body>
 </html>
