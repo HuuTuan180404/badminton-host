@@ -1,422 +1,421 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f5f5">
-  <title>Badminton Host</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f5f5" />
+    <title>Badminton Host</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f5f5;
-      color: #222;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      margin: 0 0 16px;
-      font-size: 25px;
-    }
-
-    /* Thanh công cụ */
-    .toolbar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .toolbar button {
-      height: 42px;
-      padding: 0 15px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      background: #fff;
-      color: #222;
-      font-size: 15px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .toolbar button:active {
-      background: #eee;
-    }
-
-    #search {
-      flex: 1;
-      min-width: 120px;
-      height: 42px;
-      padding: 0 12px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      background: #fff;
-      font-size: 15px;
-      outline: none;
-    }
-
-    #search:focus {
-      border-color: #888;
-    }
-
-    #addMember {
-      width: 44px;
-      min-width: 44px;
-      padding: 0;
-      font-size: 24px;
-      line-height: 1;
-      font-weight: 400;
-    }
-
-    /* Bảng */
-    .table-container {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    table {
-      width: 100%;
-      min-width: 620px;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-
-    th,
-    td {
-      padding: 9px 10px;
-      border-bottom: 1px solid #e5e5e5;
-      text-align: left;
-      vertical-align: middle;
-    }
-
-    th {
-      background: #fafafa;
-      font-weight: 600;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* Độ rộng các cột */
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 34%;
-    }
-
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 23%;
-    }
-
-    th:nth-child(3),
-    td:nth-child(3) {
-      width: 18%;
-      text-align: center;
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-      width: 25%;
-    }
-
-    .name-input,
-    .note-input {
-      width: 100%;
-      height: 38px;
-      padding: 6px 8px;
-      border: 1px solid transparent;
-      border-radius: 5px;
-      background: transparent;
-      outline: none;
-      font-size: 15px;
-    }
-
-    .name-input:hover,
-    .name-input:focus,
-    .note-input:hover,
-    .note-input:focus {
-      border-color: #ccc;
-      background: #fff;
-    }
-
-    /* Số trận */
-    .matches {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      white-space: nowrap;
-    }
-
-    .match-btn {
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #fff;
-      font-size: 20px;
-      line-height: 1;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
-
-    .match-btn:active {
-      background: #eee;
-    }
-
-    .match-count {
-      min-width: 28px;
-      text-align: center;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    /* Thanh toán */
-    .paid-checkbox {
-      width: 20px;
-      height: 20px;
-      margin: 0;
-      cursor: pointer;
-      vertical-align: middle;
-      accent-color: #222;
-    }
-
-    .empty {
-      padding: 25px;
-      text-align: center;
-      color: #888;
-    }
-
-    /* Mobile */
-    @media (max-width: 600px) {
       body {
-        padding: 12px;
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f5f5;
+        color: #222;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
       }
 
       h1 {
-        font-size: 21px;
-        margin-bottom: 12px;
+        margin: 0 0 16px;
+        font-size: 25px;
       }
 
+      /* Thanh công cụ */
       .toolbar {
-        display: grid;
-        grid-template-columns: auto auto 1fr auto;
-        gap: 6px;
-        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
       }
 
       .toolbar button {
         height: 42px;
-        padding: 0 11px;
-        font-size: 14px;
+        padding: 0 15px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        background: #fff;
+        color: #222;
+        font-size: 15px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .toolbar button:active {
+        background: #eee;
       }
 
       #search {
-        width: 100%;
-        min-width: 0;
+        flex: 1;
+        min-width: 120px;
         height: 42px;
+        padding: 0 12px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        background: #fff;
+        font-size: 15px;
+        outline: none;
+      }
+
+      #search:focus {
+        border-color: #888;
       }
 
       #addMember {
-        width: 42px;
-        min-width: 42px;
+        width: 44px;
+        min-width: 44px;
+        padding: 0;
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 400;
       }
 
+      /* Bảng */
       .table-container {
-        border-radius: 7px;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
       }
 
-      /*
-        Giữ nguyên dạng bảng.
-        Khi màn hình nhỏ, bảng có thể vuốt ngang.
-      */
       table {
-        min-width: 650px;
+        width: 100%;
+        min-width: 620px;
+        border-collapse: collapse;
+        table-layout: auto;
       }
 
       th,
       td {
-        padding: 8px;
+        padding: 9px 10px;
+        border-bottom: 1px solid #e5e5e5;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      th {
+        background: #fafafa;
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Độ rộng các cột */
+      th:nth-child(1),
+      td:nth-child(1) {
+        min-width: 170px;
+        width: auto;
+        white-space: nowrap;
+        padding-right: 18px;
+      }
+
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 170px;
+        text-align: center;
+      }
+
+      th:nth-child(3),
+      td:nth-child(3) {
+        width: 130px;
+        text-align: center;
+      }
+
+      th:nth-child(4),
+      td:nth-child(4) {
+        min-width: 180px;
       }
 
       .name-input,
       .note-input {
-        height: 40px;
-        font-size: 16px;
+        width: 100%;
+        height: 38px;
+        padding: 6px 8px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        background: transparent;
+        outline: none;
+        font-size: 15px;
+      }
+
+      .name-input:hover,
+      .name-input:focus,
+      .note-input:hover,
+      .note-input:focus {
+        border-color: #ccc;
+        background: #fff;
+      }
+
+      /* Số trận */
+      .matches {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        white-space: nowrap;
       }
 
       .match-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 22px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background: #fff;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+
+      .match-btn:active {
+        background: #eee;
       }
 
       .match-count {
-        min-width: 30px;
-        font-size: 16px;
-      }
-    }
-
-    /* Điện thoại rất nhỏ */
-    @media (max-width: 380px) {
-      body {
-        padding: 8px;
+        min-width: 28px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 600;
       }
 
-      .toolbar {
-        grid-template-columns: auto auto 1fr auto;
+      /* Thanh toán */
+      .paid-checkbox {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        cursor: pointer;
+        vertical-align: middle;
+        accent-color: #222;
       }
 
-      .toolbar button {
-        padding: 0 9px;
-        font-size: 13px;
+      .empty {
+        padding: 25px;
+        text-align: center;
+        color: #888;
       }
 
-      #addMember {
-        width: 40px;
-        min-width: 40px;
+      /* Mobile */
+      @media (max-width: 600px) {
+        body {
+          padding: 12px;
+        }
+
+        h1 {
+          font-size: 21px;
+          margin-bottom: 12px;
+        }
+
+        .toolbar {
+          display: grid;
+          grid-template-columns: auto auto 1fr auto;
+          gap: 6px;
+          margin-bottom: 10px;
+        }
+
+        .toolbar button {
+          height: 42px;
+          padding: 0 11px;
+          font-size: 14px;
+        }
+
+        #search {
+          width: 100%;
+          min-width: 0;
+          height: 42px;
+        }
+
+        #addMember {
+          width: 42px;
+          min-width: 42px;
+        }
+
+        .table-container {
+          border-radius: 7px;
+        }
+
+        /*
+        Giữ nguyên dạng bảng.
+        Khi màn hình nhỏ, bảng có thể vuốt ngang.
+      */
+        table {
+          min-width: 650px;
+        }
+
+        th,
+        td {
+          padding: 8px;
+        }
+
+        .name-input,
+        .note-input {
+          height: 40px;
+          font-size: 16px;
+        }
+
+        .match-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 22px;
+        }
+
+        .match-count {
+          min-width: 30px;
+          font-size: 16px;
+        }
       }
-    }
-  </style>
-</head>
 
-<body>
+      /* Điện thoại rất nhỏ */
+      @media (max-width: 380px) {
+        body {
+          padding: 8px;
+        }
 
-<div class="container">
+        .toolbar {
+          grid-template-columns: auto auto 1fr auto;
+        }
 
-  <h1>🏸 Badminton Host</h1>
+        .toolbar button {
+          padding: 0 9px;
+          font-size: 13px;
+        }
 
-  <div class="toolbar">
-    <button id="sortName">Tên</button>
-    <button id="sortMatches">Trận</button>
-    <input
-      id="search"
-      type="search"
-      placeholder="Tìm tên..."
-      autocomplete="off"
-    >
-    <button id="addMember" title="Thêm thành viên">+</button>
-  </div>
+        #addMember {
+          width: 40px;
+          min-width: 40px;
+        }
+      }
+    </style>
+  </head>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Tên thành viên</th>
-          <th>Số trận</th>
-          <th>Đã thanh toán</th>
-          <th>Ghi chú</th>
-        </tr>
-      </thead>
-      <tbody id="memberTable"></tbody>
-    </table>
-  </div>
+  <body>
+    <div class="container">
+      <h1>🏸 Badminton Host</h1>
 
-</div>
+      <div class="toolbar">
+        <button id="sortName">Tên</button>
+        <button id="sortMatches">Trận</button>
+        <input
+          id="search"
+          type="search"
+          placeholder="Tìm tên..."
+          autocomplete="off"
+        />
+        <button id="addMember" title="Thêm thành viên">+</button>
+      </div>
 
-<script>
-  const STORAGE_KEY = "badminton-host-members";
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Tên</th>
+              <th style="text-align: center">Số trận</th>
+              <th style="text-align: center">Paid</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody id="memberTable"></tbody>
+        </table>
+      </div>
+    </div>
 
-  let members = [];
+    <script>
+      const STORAGE_KEY = "badminton-host-members";
 
-  try {
-    members = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  } catch (error) {
-    members = [];
-  }
+      let members = [];
 
-  let searchText = "";
-  let sortMode = null;
+      try {
+        members = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch (error) {
+        members = [];
+      }
 
-  function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
-  }
+      let searchText = "";
+      let sortMode = null;
 
-  function createMember() {
-    return {
-      id: Date.now().toString() + Math.random().toString(16).slice(2),
-      name: "",
-      matches: 0,
-      paid: false,
-      note: ""
-    };
-  }
+      function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+      }
 
-  function escapeHtml(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
+      function createMember() {
+        return {
+          id: Date.now().toString() + Math.random().toString(16).slice(2),
+          name: "",
+          matches: 0,
+          paid: false,
+          note: "",
+        };
+      }
 
-  function getVisibleMembers() {
-    let result = members.filter(member =>
-      String(member.name || "")
-        .toLowerCase()
-        .includes(searchText.toLowerCase())
-    );
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
 
-    if (sortMode === "name") {
-      result.sort((a, b) =>
-        String(a.name || "").localeCompare(
-          String(b.name || ""),
-          "vi",
-          { sensitivity: "base" }
-        )
-      );
-    }
+      function sortMembers() {
+        if (sortMode === "name") {
+          members.sort((a, b) =>
+            String(a.name || "").localeCompare(String(b.name || ""), "vi", {
+              sensitivity: "base",
+            }),
+          );
+        }
 
-    if (sortMode === "matches") {
-      result.sort((a, b) =>
-        Number(b.matches || 0) - Number(a.matches || 0)
-      );
-    }
+        if (sortMode === "matches") {
+          members.sort(
+            (a, b) => Number(a.matches || 0) - Number(b.matches || 0),
+          );
+        }
+      }
 
-    return result;
-  }
+      function getVisibleMembers() {
+        return members.filter((member) =>
+          String(member.name || "")
+            .toLowerCase()
+            .includes(searchText.toLowerCase()),
+        );
+      }
 
-  function render() {
-    const table = document.getElementById("memberTable");
-    const visible = getVisibleMembers();
+      function render() {
+        const table = document.getElementById("memberTable");
+        const visible = getVisibleMembers();
 
-    table.innerHTML = "";
+        table.innerHTML = "";
 
-    if (visible.length === 0) {
-      table.innerHTML = `
+        if (visible.length === 0) {
+          table.innerHTML = `
         <tr>
           <td colspan="4" class="empty">
             Chưa có thành viên
           </td>
         </tr>
       `;
-      return;
-    }
+          return;
+        }
 
-    visible.forEach(member => {
-      const row = document.createElement("tr");
+        visible.forEach((member) => {
+          const row = document.createElement("tr");
 
-      row.innerHTML = `
+          row.innerHTML = `
         <td>
           <input
             class="name-input"
@@ -450,7 +449,7 @@
             class="paid-checkbox"
             type="checkbox"
             ${member.paid ? "checked" : ""}
-            aria-label="Đã thanh toán"
+            aria-label="Paid"
           >
         </td>
 
@@ -464,95 +463,84 @@
         </td>
       `;
 
-      const nameInput = row.querySelector(".name-input");
-      const noteInput = row.querySelector(".note-input");
-      const paidCheckbox = row.querySelector(".paid-checkbox");
-      const decreaseButton = row.querySelector(".decrease");
-      const increaseButton = row.querySelector(".increase");
+          const nameInput = row.querySelector(".name-input");
+          const noteInput = row.querySelector(".note-input");
+          const paidCheckbox = row.querySelector(".paid-checkbox");
+          const decreaseButton = row.querySelector(".decrease");
+          const increaseButton = row.querySelector(".increase");
 
-      nameInput.addEventListener("input", event => {
-        member.name = event.target.value;
-        save();
-      });
+          nameInput.addEventListener("input", (event) => {
+            member.name = event.target.value;
+            save();
+          });
 
-      noteInput.addEventListener("input", event => {
-        member.note = event.target.value;
-        save();
-      });
+          noteInput.addEventListener("input", (event) => {
+            member.note = event.target.value;
+            save();
+          });
 
-      paidCheckbox.addEventListener("change", event => {
-        member.paid = event.target.checked;
-        save();
-      });
+          paidCheckbox.addEventListener("change", (event) => {
+            member.paid = event.target.checked;
+            save();
+          });
 
-      decreaseButton.addEventListener("click", () => {
-        member.matches = Math.max(
-          0,
-          Number(member.matches || 0) - 1
-        );
+          decreaseButton.addEventListener("click", () => {
+            member.matches = Math.max(0, Number(member.matches || 0) - 1);
 
-        save();
+            save();
+            render();
+          });
+
+          increaseButton.addEventListener("click", () => {
+            member.matches = Number(member.matches || 0) + 1;
+
+            save();
+            render();
+          });
+
+          table.appendChild(row);
+        });
+      }
+
+      document.getElementById("sortName").addEventListener("click", () => {
+        sortMode = "name";
+        sortMembers();
         render();
       });
 
-      increaseButton.addEventListener("click", () => {
-        member.matches =
-          Number(member.matches || 0) + 1;
-
-        save();
+      document.getElementById("sortMatches").addEventListener("click", () => {
+        sortMode = "matches";
+        sortMembers();
         render();
       });
 
-      table.appendChild(row);
-    });
-  }
+      document.getElementById("search").addEventListener("input", (event) => {
+        searchText = event.target.value;
+        render();
+      });
 
-  /*
-    Mỗi lần bấm "Tên":
-    luôn sắp xếp A → Z.
-  */
-  document.getElementById("sortName").addEventListener("click", () => {
-    sortMode = "name";
-    render();
-  });
+      document.getElementById("addMember").addEventListener("click", () => {
+        const newMember = createMember();
 
-  /*
-    Mỗi lần bấm "Trận":
-    luôn sắp xếp nhiều trận → ít trận.
-  */
-  document.getElementById("sortMatches").addEventListener("click", () => {
-    sortMode = "matches";
-    render();
-  });
+        members.push(newMember);
 
-  document.getElementById("search").addEventListener("input", event => {
-    searchText = event.target.value;
-    render();
-  });
+        searchText = "";
+        sortMode = null;
 
-  document.getElementById("addMember").addEventListener("click", () => {
-    const newMember = createMember();
+        document.getElementById("search").value = "";
 
-    members.push(newMember);
+        save();
+        render();
 
-    searchText = "";
-    sortMode = null;
+        // Focus ngay vào tên thành viên vừa thêm.
+        const inputs = document.querySelectorAll(".name-input");
 
-    document.getElementById("search").value = "";
+        if (inputs.length > 0) {
+          inputs[inputs.length - 1].focus();
+        }
+      });
 
-    save();
-    render();
-
-    // Focus ngay vào tên thành viên vừa thêm.
-    const inputs = document.querySelectorAll(".name-input");
-
-    if (inputs.length > 0) {
-      inputs[inputs.length - 1].focus();
-    }
-  });
-
-  render();
-</script>
-
-</body>
+      render();
+    </script>
+  </body>
 </html>
