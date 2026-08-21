@@ -246,7 +246,7 @@
 
         .toolbar {
           display: grid;
-          grid-template-columns: auto auto 1fr auto;
+          grid-template-columns: auto auto auto 1fr auto;
           gap: 6px;
           margin-bottom: 10px;
         }
@@ -310,7 +310,7 @@
         }
 
         .toolbar {
-          grid-template-columns: auto auto 1fr auto;
+          grid-template-columns: auto auto auto 1fr auto;
         }
 
         .toolbar button {
@@ -331,6 +331,7 @@
       <div class="toolbar">
         <button id="sortName">Tên</button>
         <button id="sortMatches">Trận</button>
+        <button id="resetMembers" type="button">Reset</button>
         <input
           id="search"
           type="search"
@@ -566,6 +567,22 @@
       document.getElementById("sortMatches").addEventListener("click", () => {
         sortMode = "matches";
         sortMembers();
+        render();
+      });
+
+      document.getElementById("resetMembers").addEventListener("click", () => {
+        const confirmed = window.confirm(
+          "Bạn có chắc muốn xóa toàn bộ danh sách thành viên?",
+        );
+
+        if (!confirmed) return;
+
+        members = [];
+        searchText = "";
+        sortMode = null;
+        document.getElementById("search").value = "";
+
+        save();
         render();
       });
 
